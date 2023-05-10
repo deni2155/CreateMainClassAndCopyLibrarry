@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.kindcat</groupId>
+    <artifactId>CreateMainClassAndCopyLibrary</artifactId>
+    <version>0.0.0</version>
+    <packaging>jar</packaging>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.2</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <!--Плагин для добавления информации в манифест-->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <fileName>${project.version}</fileName>
+                    <archive>
+                        <manifest>
+                            <!--Подключаю classpath-->
+                            <addClasspath>true</addClasspath>
+                            <!---Указываем откуда тянутся библиотеки-->
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <!--Говорим сборщику, что jar-библиотеки нужно скинуть в одну кучу-->
+                            <!--classLayoutType>simple</classLayoutType-->
+                            <!--Указываю главный класс-->
+                            <mainClass>com.kindcat.parsexml.MainClass</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Version>${buildNumber}</Version>
+                        </manifestEntries>
+                        <!--Нужно создать указанный каталог с файлом перед компиляцией-->
+                        <!--После компиляции в манифест запишется необходимая информация для запуска основного класса-->
+                        <manifestFile>src/main/resources/manifest.mf</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <!--Плагин для копирования-->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <!--Куда складываются библиотеки-->
+                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                    <!--не перезаписываем билиотеи текущих версий-->
+                    <overWriteReleases>false</overWriteReleases>
+                    <!--Не перезаписываем зависимости без окончательной версии-->
+                    <overWriteSnapshot>false</overWriteSnapshot>
+                    <!--Перезаписываем билиотеки с наличием более новых версий-->
+                    <overWriteIfNewer>true</overWriteIfNewer>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+<!--выполяню очистку и сборку - mvn clean package-->
+<!--
+Альтернативные команды maven:
+mvn compile - компиляция проекта
+mvn exce:java -Dexec.mainClass=com.app.hibernate.MainClass - выполнение программы
+mvn jar:jar - сборка
+mvn package - компиляция+тестирование+сборка
+                                                -->

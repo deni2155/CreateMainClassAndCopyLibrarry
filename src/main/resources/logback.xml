@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false">
+    <property name="LOG_FILE_AUDIT" value="audit" />
+    <!--property name="LOG_DIR" value="/home/dreamer/logs" /-->
+    <property name="LOG_DIR" value="./logs" />
+    <appender name="FILE_AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${LOG_FILE_AUDIT}.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${LOG_FILE_AUDIT}-%d{yyyy-MM-dd-HH-mm}.log.zip</fileNamePattern>
+            <!--удаляет архивные файлы, если количество превышает это число в днях (каталоги тоже будут удалены при их наличии)-->
+            <maxHistory>125</maxHistory>
+        </rollingPolicy>
+        <!--число архивных файлов от 1 до 21, если число файлов превышает указанное число, старые файлы будут перезаписаны-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${LOG_FILE_AUDIT}-%d{yyyy-MM-dd-HH-mm}.%i.log.zip</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>21</maxIndex>
+        </rollingPolicy>
+        <!--Максимальный размер одного файла 100MB, если лимит превышен, создатся новый файл-->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>100MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd_HH:mm:ss.SSS} [%thread] %-5level %logger{36} 
+%msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+    
+    <!--logger name="audit_file" level="WARN" additivity="false" >
+        <appender-ref ref="FILE_AUDIT" />
+    </logger-->
+ 
+    <root level="DEBUG">
+        <appender-ref ref="FILE_AUDIT" />
+    </root>
+</configuration>

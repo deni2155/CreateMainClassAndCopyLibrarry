@@ -1,0 +1,13 @@
+2023-04-07_10:35:40.494 [main] WARN  c.k.parsexml.propetrties.ConfigFile 
+В конфигурационном файле src/main/resources/config.properties не найдена переменная "in". Она должна быть равна ссылке на каталог с входящими пакетами
+2023-04-07_10:36:17.561 [main] INFO  c.k.parsexml.propetrties.ConfigFile 
+Не найден конфигурационный файл resources/config.properties
+В файле нужно указать 4 переменные:
+	in=ссылка на каталог с входящими пакетами
+	out=ссылка на каталог с исходящими пакетами
+	archive=ссылка на каталог для группировки и архивирования пакетов
+	temp=ссылка на временную папку для работы приложения
+2023-04-07_10:37:52.958 [main] WARN  c.k.parsexml.propetrties.ConfigFile 
+В конфигурационном файле src/main/resources/config.properties не найдена переменная "in". Она должна быть равна ссылке на каталог с входящими пакетами
+2023-04-07_10:38:41.626 [main] WARN  c.k.parsexml.propetrties.ConfigFile 
+В конфигурационном файле src/main/resources/config.properties не найдена переменная "out". Она должна быть равна ссылке на каталог с исходящими пакетами
